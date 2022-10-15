@@ -58,11 +58,32 @@ def delete_product(id):
     p_converted = p.json()
     return p_converted
 
+def add_new_user(name, age):  
+    url = BASE_URL + '/user'
+    new_user = {
+	    "name": name,
+	    "age": age,
+    }
+    p = requests.post(url, json=new_user)
+    print(p)
+    p_converted = p.json()
+    return p_converted
+
+def get_all_users():
+    url = BASE_URL + '/user'
+    r = requests.get(url)
+    response = r.json()
+    print(response)
+    return response
+
+
 if __name__ == "__main__":
     # get_all_products()
     # get_page()
-    num_Product = 9
-    add_new_product("Product "+str(num_Product), "add new product", 100.0, 30)
-    num_Product += 1
-    update_product(9, "Product New", "Updated Product newnew", 200.0, 40)
+    # num_Product = 9
+    # add_new_product("Product "+str(num_Product), "add new product", 100.0, 30)
+    # num_Product += 1
+    # update_product(9, "Product New", "Updated Product newnew", 200.0, 40)
     # delete_product(2)
+    # add_new_user("user name 2", 25)
+    get_all_users()

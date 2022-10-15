@@ -114,5 +114,43 @@ def delete_product(id):
     return product_schema.jsonify(product)
 
 
+# User Class/Model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    age = db.Column(db.Integer)
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'age')
+
+# Init Schema
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+# Create a Product
+@app.route('/user', methods=['POST'])
+def add_user():
+    name = request.json['name']
+    age = request.json['age']
+    
+    new_user = User(name, age)
+    print(new_user.id)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return user_schema.jsonify(new_user)
+
+# Get all users
+@app.route('/user', methods=['GET'])
+def get_users():
+    all_users = User.query.all()
+    result = users_schema.dump(all_users)
+    return jsonify(result)
+
 if __name__ == '__main__':
     app.run(debug=True)
