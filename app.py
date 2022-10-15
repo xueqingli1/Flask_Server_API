@@ -49,6 +49,7 @@ products_schema = ProductSchema(many=True)
 # Create a Product
 @app.route('/product', methods=['POST'])
 def add_product():
+    print("server side", request)
     name = request.json['name']
     description = request.json['description']
     price = request.json['price']
@@ -87,7 +88,7 @@ def get_product(id):
 @app.route('/product/<id>', methods=['PUT'])
 def update_product(id):
     product = Product.query.get(id)
-
+    print("server side", request)
     name = request.json['name']
     description = request.json['description']
     price = request.json['price']
@@ -102,14 +103,14 @@ def update_product(id):
 
     return product_schema.jsonify(product)
 
-# Get single product
+# Delete single product
 @app.route('/product/<id>', methods=['DELETE'])
 def delete_product(id):
     product = Product.query.get(id)
 
     db.session.delete(product)
     db.session.commit()
-    
+
     return product_schema.jsonify(product)
 
 
